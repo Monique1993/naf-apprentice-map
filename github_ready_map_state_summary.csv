@@ -1,0 +1,52 @@
+State,State Code,Total Apprentices,Industry Breakdown,Has Data
+Alabama,AL,3,Advanced Manufacturing (1); Building trades/construction (1); Other (1),True
+Alaska,AK,7,Building trades/construction (3); Information technology (3); Other (1),True
+Arizona,AZ,10,Building trades/construction (4); Advanced Manufacturing (2); Cybersecurity (2); Information technology (1); Other (1),True
+Arkansas,AR,12,Building trades/construction (5); Advanced Manufacturing (2); Health care (2); Renewable energy/green technology (2); Other (1),True
+California,CA,95,Child care/early childhood education (41); Health care (18); Other (18); Education (K-12) (10); Advanced Manufacturing (5); Building trades/construction (3),True
+Colorado,CO,15,Other (8); Health care (2); Information technology (2); Education (K-12) (1); Hospitality (1); Logistics and transportation (1),True
+Connecticut,CT,2,Advanced Manufacturing (2),True
+Delaware,DE,2,Health care (1); Other (1),True
+District of Columbia,DC,3,Other (2); Artificial inteligence (1),True
+Florida,FL,25,Health care (18); Other (3); Advanced Manufacturing (1); Building trades/construction (1); Information technology (1); Logistics and transportation (1),True
+Georgia,GA,17,Building trades/construction (6); Education (K-12) (6); Other (4); Health care (1),True
+Hawaii,HI,0,No eligible apprentices in uploaded dataset,False
+Idaho,ID,0,No eligible apprentices in uploaded dataset,False
+Illinois,IL,35,Building trades/construction (14); Other (10); Logistics and transportation (4); Health care (2); Information technology (2); Renewable energy/green technology (2); Financial services (1),True
+Indiana,IN,10,Child care/early childhood education (7); Other (3),True
+Iowa,IA,4,Building trades/construction (2); Advanced Manufacturing (1); Education (K-12) (1),True
+Kansas,KS,0,No eligible apprentices in uploaded dataset,False
+Kentucky,KY,3,Other (2); Building trades/construction (1),True
+Louisiana,LA,1,Cybersecurity (1),True
+Maine,ME,6,Health care (3); Building trades/construction (2); Other (1),True
+Maryland,MD,7,Other (3); Building trades/construction (1); Child care/early childhood education (1); Cybersecurity (1); Information technology (1),True
+Massachusetts,MA,9,Building trades/construction (3); Child care/early childhood education (2); Health care (2); Information technology (2),True
+Michigan,MI,43,Health care (16); Advanced Manufacturing (8); Child care/early childhood education (5); Education (K-12) (5); Renewable energy/green technology (5); Building trades/construction (2); Information technology (1); Other (1),True
+Minnesota,MN,5,Other (3); Building trades/construction (1); Information technology (1),True
+Mississippi,MS,10,Education (K-12) (8); Other (2),True
+Missouri,MO,40,Building trades/construction (13); Education (K-12) (13); Health care (12); Other (2),True
+Montana,MT,0,No eligible apprentices in uploaded dataset,False
+Nebraska,NE,1,Building trades/construction (1),True
+Nevada,NV,9,Education (K-12) (6); Building trades/construction (2); Child care/early childhood education (1),True
+New Hampshire,NH,0,No eligible apprentices in uploaded dataset,False
+New Jersey,NJ,7,Other (3); Building trades/construction (2); Financial services (2),True
+New Mexico,NM,0,No eligible apprentices in uploaded dataset,False
+New York,NY,21,Other (6); Building trades/construction (5); Information technology (4); Cybersecurity (2); Child care/early childhood education (1); E-Commerce (1); Education (K-12) (1); Financial services (1),True
+North Carolina,NC,68,Health care (29); Child care/early childhood education (13); Education (K-12) (12); Advanced Manufacturing (11); Building trades/construction (2); Other (1),True
+North Dakota,ND,2,Health care (2),True
+Ohio,OH,2,Building trades/construction (1); Health care (1),True
+Oklahoma,OK,1,Building trades/construction (1),True
+Oregon,OR,9,Building trades/construction (4); Health care (3); Advanced Manufacturing (1); Other (1),True
+Pennsylvania,PA,20,Other (6); Health care (5); Information technology (4); Building trades/construction (2); E-Commerce (1); Financial services (1); Hospitality (1),True
+Rhode Island,RI,1,Building trades/construction (1),True
+South Carolina,SC,4,Child care/early childhood education (1); Education (K-12) (1); Information technology (1); Other (1),True
+South Dakota,SD,10,Education (K-12) (5); Health care (4); Financial services (1),True
+Tennessee,TN,11,Health care (4); Building trades/construction (3); Other (2); Advanced Manufacturing (1); Information technology (1),True
+Texas,TX,91,Building trades/construction (23); Cybersecurity (21); Education (K-12) (18); Other (16); Information technology (8); Health care (5),True
+Utah,UT,0,No eligible apprentices in uploaded dataset,False
+Vermont,VT,6,Health care (3); Building trades/construction (1); Hospitality (1); Other (1),True
+Virginia,VA,9,Other (3); Advanced Manufacturing (2); Education (K-12) (2); Building trades/construction (1); Health care (1),True
+Washington,WA,98,Building trades/construction (39); Health care (28); Other (14); Advanced Manufacturing (12); Information technology (2); Renewable energy/green technology (2); Logistics and transportation (1),True
+West Virginia,WV,2,Building trades/construction (1); Other (1),True
+Wisconsin,WI,15,Health care (7); Building trades/construction (4); Advanced Manufacturing (3); Other (1),True
+Wyoming,WY,0,No eligible apprentices in uploaded dataset,False

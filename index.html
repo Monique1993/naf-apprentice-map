@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>National Apprentice Fund Interactive Map</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+:root {
+  --teal-dark:#0f766e; --teal:#2ca6a4; --teal-light:#bfe9e3; --bg:#f7f9fc; --text:#17324d; --muted:#5d7186; --card:#ffffff; --border:#d9e3ef;
+}
+body { margin:0; font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 20px; }
+.header { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(16,42,67,0.05); }
+h1 { margin:0 0 8px 0; font-size: 28px; line-height: 1.15; }
+.sub { color: var(--muted); font-size: 15px; line-height: 1.45; margin:0; }
+.grid { display:grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 2px 12px rgba(16,42,67,0.05); }
+#map { width: 100%; height: 760px; }
+.side { padding: 18px; }
+.stat { border:1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; background: linear-gradient(180deg, #fff 0%, #fbfdff 100%); }
+.stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 6px; }
+.stat .value { font-size: 32px; font-weight: 700; color: var(--teal-dark); }
+.notes { margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.notes strong { color: var(--text); }
+code { background:#eef4fb; padding:2px 6px; border-radius:6px; }
+.small {font-size:12px; color:var(--muted); margin-top:8px;}
+@media (max-width: 980px) { .grid { grid-template-columns: 1fr; } #map { height: 620px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>National Apprentice Fund Interactive Map</h1>
+    <p class="sub">Hover over a state to view total apprentices and industry breakdown. States with apprentices are shaded in teal, and totals are labeled directly on the map.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div id="map"></div></div>
+    <div class="card side">
+      <div class="stat"><div class="label">Eligible apprentices</div><div class="value">751</div></div>
+      <div class="stat"><div class="label">States + DC with data</div><div class="value">43</div></div>
+      <div class="notes">
+        <strong>Note:</strong> Small states and DC use separate number labels so totals remain readable. States without eligible apprentices stay light gray.<br><br>
+        <strong>GitHub Pages tip:</strong> keep this file named <code>index.html</code> when you upload it.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const stateRows = [
+  {abbr:"AL", state:"Alabama", value:3, detail:"Advanced Manufacturing (1); Building trades/construction (1); Other (1)", lat:32.806671, lon:-86.791130},
+  {abbr:"AK", state:"Alaska", value:7, detail:"Building trades/construction (3); Information technology (3); Other (1)", lat:61.370716, lon:-152.404419},
+  {abbr:"AZ", state:"Arizona", value:10, detail:"Building trades/construction (4); Advanced Manufacturing (2); Cybersecurity (2); Information technology (1); Other (1)", lat:33.729759, lon:-111.431221},
+  {abbr:"AR", state:"Arkansas", value:12, detail:"Building trades/construction (5); Advanced Manufacturing (2); Health care (2); Renewable energy/green technology (2); Other (1)", lat:34.969704, lon:-92.373123},
+  {abbr:"CA", state:"California", value:95, detail:"Child care/early childhood education (41); Health care (18); Other (18); Education (K-12) (10); Advanced Manufacturing (5); Building trades/construction (3)", lat:36.116203, lon:-119.681564},
+  {abbr:"CO", state:"Colorado", value:15, detail:"Other (8); Health care (2); Information technology (2); Education (K-12) (1); Hospitality (1); Logistics and transportation (1)", lat:39.059811, lon:-105.311104},
+  {abbr:"CT", state:"Connecticut", value:2, detail:"Advanced Manufacturing (2)", lat:41.597782, lon:-72.755371},
+  {abbr:"DE", state:"Delaware", value:2, detail:"Health care (1); Other (1)", lat:39.318523, lon:-75.507141},
+  {abbr:"FL", state:"Florida", value:25, detail:"Health care (18); Other (3); Advanced Manufacturing (1); Building trades/construction (1); Information technology (1); Logistics and transportation (1)", lat:27.766279, lon:-81.686783},
+  {abbr:"GA", state:"Georgia", value:17, detail:"Building trades/construction (6); Education (K-12) (6); Other (4); Health care (1)", lat:33.040619, lon:-83.643074},
+  {abbr:"HI", state:"Hawaii", value:0, detail:"No eligible apprentices in uploaded dataset", lat:21.094318, lon:-157.498337},
+  {abbr:"ID", state:"Idaho", value:0, detail:"No eligible apprentices in uploaded dataset", lat:44.240459, lon:-114.478828},
+  {abbr:"IL", state:"Illinois", value:35, detail:"Building trades/construction (14); Other (10); Logistics and transportation (4); Health care (2); Information technology (2); Renewable energy/green technology (2); Financial services (1)", lat:40.349457, lon:-88.986137},
+  {abbr:"IN", state:"Indiana", value:10, detail:"Child care/early childhood education (7); Other (3)", lat:39.849426, lon:-86.258278},
+  {abbr:"IA", state:"Iowa", value:4, detail:"Building trades/construction (2); Advanced Manufacturing (1); Education (K-12) (1)", lat:42.011539, lon:-93.210526},
+  {abbr:"KS", state:"Kansas", value:0, detail:"No eligible apprentices in uploaded dataset", lat:38.526600, lon:-96.726486},
+  {abbr:"KY", state:"Kentucky", value:3, detail:"Other (2); Building trades/construction (1)", lat:37.668140, lon:-84.670067},
+  {abbr:"LA", state:"Louisiana", value:1, detail:"Cybersecurity (1)", lat:31.169546, lon:-91.867805},
+  {abbr:"ME", state:"Maine", value:6, detail:"Health care (3); Building trades/construction (2); Other (1)", lat:44.693947, lon:-69.381927},
+  {abbr:"MD", state:"Maryland", value:7, detail:"Other (3); Building trades/construction (1); Child care/early childhood education (1); Cybersecurity (1); Information technology (1)", lat:39.063946, lon:-76.802101},
+  {abbr:"MA", state:"Massachusetts", value:9, detail:"Building trades/construction (3); Child care/early childhood education (2); Health care (2); Information technology (2)", lat:42.230171, lon:-71.530106},
+  {abbr:"MI", state:"Michigan", value:43, detail:"Health care (16); Advanced Manufacturing (8); Child care/early childhood education (5); Education (K-12) (5); Renewable energy/green technology (5); Building trades/construction (2); Information technology (1); Other (1)", lat:43.326618, lon:-84.536095},
+  {abbr:"MN", state:"Minnesota", value:5, detail:"Other (3); Building trades/construction (1); Information technology (1)", lat:45.694454, lon:-93.900192},
+  {abbr:"MS", state:"Mississippi", value:10, detail:"Education (K-12) (8); Other (2)", lat:32.741646, lon:-89.678696},
+  {abbr:"MO", state:"Missouri", value:40, detail:"Building trades/construction (13); Education (K-12) (13); Health care (12); Other (2)", lat:38.456085, lon:-92.288368},
+  {abbr:"MT", state:"Montana", value:0, detail:"No eligible apprentices in uploaded dataset", lat:46.921925, lon:-110.454353},
+  {abbr:"NE", state:"Nebraska", value:1, detail:"Building trades/construction (1)", lat:41.125370, lon:-98.268082},
+  {abbr:"NV", state:"Nevada", value:9, detail:"Education (K-12) (6); Building trades/construction (2); Child care/early childhood education (1)", lat:38.313515, lon:-117.055374},
+  {abbr:"NH", state:"New Hampshire", value:0, detail:"No eligible apprentices in uploaded dataset", lat:43.452492, lon:-71.563896},
+  {abbr:"NJ", state:"New Jersey", value:7, detail:"Other (3); Building trades/construction (2); Financial services (2)", lat:40.298904, lon:-74.521011},
+  {abbr:"NM", state:"New Mexico", value:0, detail:"No eligible apprentices in uploaded dataset", lat:34.840515, lon:-106.248482},
+  {abbr:"NY", state:"New York", value:21, detail:"Other (6); Building trades/construction (5); Information technology (4); Cybersecurity (2); Child care/early childhood education (1); E-Commerce (1); Education (K-12) (1); Financial services (1)", lat:42.165726, lon:-74.948051},
+  {abbr:"NC", state:"North Carolina", value:68, detail:"Health care (29); Child care/early childhood education (13); Education (K-12) (12); Advanced Manufacturing (11); Building trades/construction (2); Other (1)", lat:35.630066, lon:-79.806419},
+  {abbr:"ND", state:"North Dakota", value:2, detail:"Health care (2)", lat:47.528912, lon:-99.784012},
+  {abbr:"OH", state:"Ohio", value:2, detail:"Building trades/construction (1); Health care (1)", lat:40.388783, lon:-82.764915},
+  {abbr:"OK", state:"Oklahoma", value:1, detail:"Building trades/construction (1)", lat:35.565342, lon:-96.928917},
+  {abbr:"OR", state:"Oregon", value:9, detail:"Building trades/construction (4); Health care (3); Advanced Manufacturing (1); Other (1)", lat:44.572021, lon:-122.070938},
+  {abbr:"PA", state:"Pennsylvania", value:20, detail:"Other (6); Health care (5); Information technology (4); Building trades/construction (2); E-Commerce (1); Financial services (1); Hospitality (1)", lat:40.590752, lon:-77.209755},
+  {abbr:"RI", state:"Rhode Island", value:1, detail:"Building trades/construction (1)", lat:41.680893, lon:-71.511780},
+  {abbr:"SC", state:"South Carolina", value:4, detail:"Child care/early childhood education (1); Education (K-12) (1); Information technology (1); Other (1)", lat:33.856892, lon:-80.945007},
+  {abbr:"SD", state:"South Dakota", value:10, detail:"Education (K-12) (5); Health care (4); Financial services (1)", lat:44.299782, lon:-99.438828},
+  {abbr:"TN", state:"Tennessee", value:11, detail:"Health care (4); Building trades/construction (3); Other (2); Advanced Manufacturing (1); Information technology (1)", lat:35.747845, lon:-86.692345},
+  {abbr:"TX", state:"Texas", value:91, detail:"Building trades/construction (23); Cybersecurity (21); Education (K-12) (18); Other (16); Information technology (8); Health care (5)", lat:31.054487, lon:-97.563461},
+  {abbr:"UT", state:"Utah", value:0, detail:"No eligible apprentices in uploaded dataset", lat:40.150032, lon:-111.862434},
+  {abbr:"VT", state:"Vermont", value:6, detail:"Health care (3); Building trades/construction (1); Hospitality (1); Other (1)", lat:44.045876, lon:-72.710686},
+  {abbr:"VA", state:"Virginia", value:9, detail:"Other (3); Advanced Manufacturing (2); Education (K-12) (2); Building trades/construction (1); Health care (1)", lat:37.769337, lon:-78.169968},
+  {abbr:"WA", state:"Washington", value:98, detail:"Building trades/construction (39); Health care (28); Other (14); Advanced Manufacturing (12); Information technology (2); Renewable energy/green technology (2); Logistics and transportation (1)", lat:47.400902, lon:-121.490494},
+  {abbr:"WV", state:"West Virginia", value:2, detail:"Building trades/construction (1); Other (1)", lat:38.491226, lon:-80.954453},
+  {abbr:"WI", state:"Wisconsin", value:15, detail:"Health care (7); Building trades/construction (4); Advanced Manufacturing (3); Other (1)", lat:44.268543, lon:-89.616508},
+  {abbr:"WY", state:"Wyoming", value:0, detail:"No eligible apprentices in uploaded dataset", lat:42.755966, lon:-107.302490}
+];
+
+const mainTrace = {
+  type: "choropleth",
+  locationmode: "USA-states",
+  locations: stateRows.map(d => d.abbr),
+  z: stateRows.map(d => d.value),
+  zmin: 0,
+  zmax: 98,
+  customdata: stateRows.map(d => [d.state, d.value, d.detail]),
+  colorscale: [
+    [0.00, "#e5e7eb"],
+    [0.001, "#bfe9e3"],
+    [0.50, "#2ca6a4"],
+    [1.00, "#0f766e"]
+  ],
+  marker: { line: { color: "#ffffff", width: 1 } },
+  showscale: false,
+  hovertemplate: "<b>%{customdata[0]}</b><br>Total Apprentices: %{customdata[1]}<br>%{customdata[2]}<extra></extra>"
+};
+
+const labelRows = stateRows.filter(d => d.value > 0);
+const labelTrace = {
+  type: "scattergeo",
+  mode: "text",
+  lat: labelRows.map(d => d.lat),
+  lon: labelRows.map(d => d.lon),
+  text: labelRows.map(d => String(d.value)),
+  textfont: {
+    family: "Arial, Helvetica, sans-serif",
+    size: 12,
+    color: "#17324d"
+  },
+  hoverinfo: "skip",
+  showlegend: false
+};
+
+const dcTrace = {
+  type: "scattergeo",
+  mode: "markers+text",
+  lat: [38.9072],
+  lon: [-77.0369],
+  text: ["3"],
+  textposition: "top center",
+  textfont: {family:"Arial, Helvetica, sans-serif", size:12, color:"#17324d"},
+  hovertemplate: "<b>District of Columbia</b><br>Total Apprentices: 3<br>Other (2); Artificial inteligence (1)<extra></extra>",
+  marker: {
+    size: 11,
+    color: "#2ca6a4",
+    line: {color: "#ffffff", width: 1.5}
+  },
+  name: "District of Columbia",
+  showlegend: false
+};
+
+const layout = {
+  paper_bgcolor: "#ffffff",
+  plot_bgcolor: "#ffffff",
+  margin: {l: 12, r: 12, t: 8, b: 8},
+  geo: {
+    scope: "usa",
+    projection: {type: "albers usa"},
+    bgcolor: "#ffffff",
+    showlakes: false,
+    showland: true,
+    landcolor: "#f3f7fb"
+  },
+  dragmode: false
+};
+const config = { responsive: true, displayModeBar: false, scrollZoom: false };
+Plotly.newPlot("map", [mainTrace, labelTrace, dcTrace], layout, config);
+</script>
+</body>
+</html>
